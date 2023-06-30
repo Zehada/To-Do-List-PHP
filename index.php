@@ -22,13 +22,13 @@
 
     <?php
     $file = "tasks.txt";
-    $fileOpen = fopen($file, "a");
+    $fileOpen = fopen($file, "a+");
     if (
         !empty($_GET["name"]) and
         !empty($_GET["description"]) and
         !empty($_GET["date"])
     ) {
-        $nouvelleTache = $_GET['name'] . "+-+" . $_GET['description'] . "+-+" . $_GET['date'];
+        $nouvelleTache = "<tr><td>" . $_GET['name'] . "</td><td>" . $_GET['description'] . "</td><td>" . $_GET['date'] . "</td><td><form><input type='submit' name='submitOk' value='Ok'></form></td></tr>";
         fwrite($fileOpen, $nouvelleTache . "\n");
         // fwrite(
         //     $fileOpen,
@@ -62,20 +62,30 @@
 
             $contenu = file_get_contents($file);
             $taches = explode("\n", $contenu);
+            $result = '';
 
             for ($i = 0; $i < count($taches) - 1; $i++) {
-                echo "<tr>";
-                $tacheUnitaire = explode("+-+", $taches[$i]);
-                for ($j = 0; $j < count($tacheUnitaire); $j++) {
-                    echo "<td>" . $tacheUnitaire[$j] . "</td>";
-                }
-                echo "<td><form><input type='submit' name='submitOk" . $i . "' value='Ok'></td>";
-                echo "</tr>";
+                echo str_replace('submitOk', 'submitOk' . $i, $taches[$i]);
 
                 if (isset($_GET['submitOk' . $i . ''])) {
-                    echo "hello";
+
+                    foreach ($taches as $tache) {
+                        if (str_replace('submitOk', 'submitOk' . $i, $tache) != str_replace('submitOk', 'submitOk' . $i, $taches[$i])) {
+                            $result .= $tache . "\n";
+
+                            $fileOpenOk = fopen($file, "w+");
+                            fwrite($fileOpenOk, $result);
+                            fclose($fileOpenOk);
+                        }
+                    }
+                    header("Location: index.php");
                 };
             };
+
+
+
+
+
             ?>
 
         </tbody>
