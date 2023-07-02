@@ -10,14 +10,14 @@
 </head>
 
 <body>
-    <form class="" action="">
-        <label for="fname">Tâche :</label><br>
-        <input type="text" name="name" id="taskName"><br>
-        <label for="fname">Description :</label><br>
-        <input type="text" name="description" id="taskDescription"><br>
-        <label for="fname">Date limite :</label><br>
-        <input type="date" name="date" id="taskDateLimit"><br>
-        <input type="submit" name="submit" value="Ajouter" class="btn btn-dark"><br>
+    <form id="taskForm" class="m-4" action="">
+        <label class="form-label" for="taskName">Tâche</label><br>
+        <input class="form-control" type="text" name="name" id="taskName"><br>
+        <label class="form-label" for="taskDescription">Description</label><br>
+        <input class="form-control" type="text" name="description" id="taskDescription"><br>
+        <label class="form-label" for="taskDateLimit">Date limite</label><br>
+        <input class="form-control" type="date" name="date" id="taskDateLimit"><br>
+        <input class="btn btn-dark" type="submit" name="submit" value="Ajouter"><br>
     </form>
 
     <?php
@@ -43,7 +43,7 @@
     <table class="table m-auto">
         <thead class="table-dark">
             <tr>
-                <th scope="col">Tâche</th>
+                <th scope="col">Tâche/Nom</th>
                 <th scope="col">Description</th>
                 <th scope="col">Date</th>
                 <th scope="col"></th>
@@ -73,10 +73,10 @@
                     for ($j = 0; $j < count($tacheUnitaire) - 1; $j++) {
                         echo "<td>" . $tacheUnitaire[$j] . "</td>";
                     }
-                    echo "<td class='d-flex'><form><input type='submit' name='submitOk" . $i . "' value='Ok'></form><form><input type='submit' name='submitModify" . $i . "' value='Modifier'></form></td>";
+                    echo "<td><form><input class='btn btn-dark' type='submit' name='submitModify" . $i . "' value='Modifier'></form><form><input class='btn btn-dark mt-2' type='submit' name='submitOk" . $i . "' value='Supprimer'></form></td>";
                     echo "</tr>";
                 } else {
-                    echo "<tr><form id='modify" . $id . "'></form><td><input type='text' name='nameModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[0] . "'></td><td><input type='text' name='descriptionModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[1] . "'></td><td><input type='date' name='dateModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[2] . "'></td><td><input type='submit' name='submitModifie" . $id . "' form='modify" . $id . "' value='Modifier'></td></tr>";
+                    echo "<tr><form id='modify" . $id . "'></form><td><input class='form-control nameModify' type='text' name='nameModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[0]) . "'></td><td><input class='form-control descriptionModify' type='text' name='descriptionModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[1]) . "'></td><td><input class='form-control dateModify' type='date' name='dateModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[2] . "'></td><td><input class='btn btn-dark' type='submit' name='submitModifie" . $id . "' form='modify" . $id . "' value='Modifier'></td></tr>";
                 }
 
 

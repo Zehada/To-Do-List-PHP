@@ -1,3 +1,25 @@
 table {
     width: 90%!important;
 }
+
+#taskForm {
+    width: 15rem;
+}
+
+.nameModify, .descriptionModify {
+    width: 100%!important;
+}
+
+.dateModify {
+    width: 8.5rem!important;
+}
+
+@media screen and (max-width: 575px) {
+    body, #taskName, #taskDescription, #taskDateLimit, .btn, .nameModify, .descriptionModify, .dateModify {
+        font-size: 0.6rem!important;
+    }
+    .dateModify {
+        width: 5.5rem!important;
+    }
+
+}
