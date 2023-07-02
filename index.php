@@ -10,40 +10,33 @@
 </head>
 
 <body>
-    <form action="">
+    <form class="" action="">
         <label for="fname">Tâche :</label><br>
         <input type="text" name="name" id="taskName"><br>
-        <label for="fname">Déscription :</label><br>
+        <label for="fname">Description :</label><br>
         <input type="text" name="description" id="taskDescription"><br>
         <label for="fname">Date limite :</label><br>
         <input type="date" name="date" id="taskDateLimit"><br>
-        <input type="submit" name="submit" value="Ajouter"><br>
+        <input type="submit" name="submit" value="Ajouter" class="btn btn-dark"><br>
     </form>
 
     <?php
     $file = "tasks.txt";
-    $fileOpen = fopen($file, "a+");
+    $fileOpen = fopen($file, "a");
     if (
         !empty($_GET["name"]) and
         !empty($_GET["description"]) and
         !empty($_GET["date"])
     ) {
-        $nouvelleTache = "<tr><td>" . $_GET['name'] . "</td><td>" . $_GET['description'] . "</td><td>" . $_GET['date'] . "</td><td><form><input type='submit' name='submitOk' value='Ok'></form></td></tr>";
+        $nouvelleTache = $_GET['name'] . "+-+" . $_GET['description'] . "+-+" . $_GET['date'] . "+-+" . uniqid();
         fwrite($fileOpen, $nouvelleTache . "\n");
-        // fwrite(
-        //     $fileOpen,
-        //     "<tr><th scope='row'>" .
-        //         $_GET["name"] .
-        //         "</th><td>" .
-        //         $_GET["description"] .
-        //         "</td><td>" .
-        //         $_GET["date"] .
-        //         '</td><td><form><input type="submit" name="submit" value="Ok"><form></td></tr>'
-        // );
         header("Location: index.php");
     }
 
     fclose($fileOpen);
+
+
+
 
     ?>
 
@@ -51,7 +44,7 @@
         <thead class="table-dark">
             <tr>
                 <th scope="col">Tâche</th>
-                <th scope="col">Déscription</th>
+                <th scope="col">Description</th>
                 <th scope="col">Date</th>
                 <th scope="col"></th>
             </tr>
@@ -63,27 +56,85 @@
             $contenu = file_get_contents($file);
             $taches = explode("\n", $contenu);
             $result = '';
+            $tachesOk = array();
+
+
 
             for ($i = 0; $i < count($taches) - 1; $i++) {
-                echo str_replace('submitOk', 'submitOk' . $i, $taches[$i]);
+
+
+                $tacheUnitaire = explode("+-+", $taches[$i]);
+                $id = end($tacheUnitaire);
+
+                if (str_contains($taches[$i], 'modifié123') === false) {
+
+                    echo "<tr>";
+
+                    for ($j = 0; $j < count($tacheUnitaire) - 1; $j++) {
+                        echo "<td>" . $tacheUnitaire[$j] . "</td>";
+                    }
+                    echo "<td class='d-flex'><form><input type='submit' name='submitOk" . $i . "' value='Ok'></form><form><input type='submit' name='submitModify" . $i . "' value='Modifier'></form></td>";
+                    echo "</tr>";
+                } else {
+                    echo "<tr><form id='modify" . $id . "'></form><td><input type='text' name='nameModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[0] . "'></td><td><input type='text' name='descriptionModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[1] . "'></td><td><input type='date' name='dateModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[2] . "'></td><td><input type='submit' name='submitModifie" . $id . "' form='modify" . $id . "' value='Modifier'></td></tr>";
+                }
+
 
                 if (isset($_GET['submitOk' . $i . ''])) {
-
                     foreach ($taches as $tache) {
-                        if (str_replace('submitOk', 'submitOk' . $i, $tache) != str_replace('submitOk', 'submitOk' . $i, $taches[$i])) {
-                            $result .= $tache . "\n";
-
-                            $fileOpenOk = fopen($file, "w+");
-                            fwrite($fileOpenOk, $result);
-                            fclose($fileOpenOk);
+                        if ($tache != $taches[$i]) {
+                            array_push($tachesOk, $tache);
                         }
                     }
+                    $result = implode("\n", $tachesOk);
+                    echo $result;
+                    $fileOpenOk = fopen($file, "w+");
+                    fwrite($fileOpenOk, $result);
+                    fclose($fileOpenOk);
+
                     header("Location: index.php");
-                };
+                }
+
+
+
+                if (isset($_GET['submitModify' . $i . '']) and str_starts_with($taches[$i], '<tr>') === false) {
+                    $taskModify = $tacheUnitaire[0] . "+-+" . $tacheUnitaire[1] . "+-+" . $tacheUnitaire[2] . "+-+" . "modifié123" . "+-+" . uniqid();
+
+                    array_push($tachesOk, $taskModify);
+
+                    foreach ($taches as $tache) {
+                        if ($tache != $taches[$i]) {
+                            array_push($tachesOk, $tache);
+                        }
+                    }
+
+                    $result = implode("\n", $tachesOk);
+                    $fileOpenOk = fopen($file, "w+");
+                    fwrite($fileOpenOk, $result);
+                    fclose($fileOpenOk);
+
+                    header("Location: index.php");
+                }
+
+
+                if (isset($_GET['submitModifie' . $id . ''])) {
+
+                    echo "hello";
+                    $taskModifie = $_GET['nameModify' . $id . ''] . "+-+" . $_GET['descriptionModify' . $id . ''] . "+-+" . $_GET['dateModify' . $id . ''] . "+-+" . uniqid();
+                    array_push($tachesOk, $taskModifie);
+                    foreach ($taches as $tache) {
+                        if ($tache != $taches[$i]) {
+                            array_push($tachesOk, $tache);
+                        }
+                    }
+                    $result = implode("\n", $tachesOk);
+                    $fileOpenOk = fopen($file, "w+");
+                    fwrite($fileOpenOk, $result);
+                    fclose($fileOpenOk);
+
+                    header("Location: index.php");
+                }
             };
-
-
-
 
 
             ?>
