@@ -23,11 +23,7 @@
     <?php
     $file = "tasks.txt";
     $fileOpen = fopen($file, "a");
-    if (
-        !empty($_GET["name"]) and
-        !empty($_GET["description"]) and
-        !empty($_GET["date"])
-    ) {
+    if (!empty($_GET["name"]) and !empty($_GET["description"]) and !empty($_GET["date"])) {
         $nouvelleTache = $_GET['name'] . "+-+" . $_GET['description'] . "+-+" . $_GET['date'] . "+-+" . uniqid();
         fwrite($fileOpen, $nouvelleTache . "\n");
         header("Location: index.php");
@@ -36,9 +32,8 @@
     fclose($fileOpen);
 
 
-
-
     ?>
+
 
     <table class="table m-auto">
         <thead class="table-dark">
@@ -117,9 +112,7 @@
                 }
 
 
-                if (isset($_GET['submitModifie' . $id . ''])) {
-
-                    echo "hello";
+                if (isset($_GET['submitModifie' . $id . '']) and !empty($_GET['nameModify' . $id . '']) and !empty($_GET['descriptionModify' . $id . '']) and !empty($_GET['dateModify' . $id . ''])) {
                     $taskModifie = $_GET['nameModify' . $id . ''] . "+-+" . $_GET['descriptionModify' . $id . ''] . "+-+" . $_GET['dateModify' . $id . ''] . "+-+" . uniqid();
                     array_push($tachesOk, $taskModifie);
                     foreach ($taches as $tache) {
