@@ -68,10 +68,10 @@
                     for ($j = 0; $j < count($tacheUnitaire) - 1; $j++) {
                         echo "<td>" . $tacheUnitaire[$j] . "</td>";
                     }
-                    echo "<td><form><input class='btn btn-dark' type='submit' name='submitModify" . $i . "' value='Modifier'></form><form><input class='btn btn-dark mt-2' type='submit' name='submitOk" . $i . "' value='Supprimer'></form></td>";
+                    echo "<td><form><button class='modifier btn bg-transparent p-0' type='submit' name='submitModify" . $i . "'><img src='images/modifier.png' alt=''></button></form><form><button class='supprimer btn bg-transparent p-0 mt-2' type='submit' name='submitOk" . $i . "'><img src='images/supprimer.png' alt=''></button></form></td>";
                     echo "</tr>";
                 } else {
-                    echo "<tr><form id='modify" . $id . "'></form><td><input class='form-control nameModify' type='text' name='nameModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[0]) . "'></td><td><input class='form-control descriptionModify' type='text' name='descriptionModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[1]) . "'></td><td><input class='form-control dateModify' type='date' name='dateModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[2] . "'></td><td><input class='btn btn-dark' type='submit' name='submitModifie" . $id . "' form='modify" . $id . "' value='Modifier'></td></tr>";
+                    echo "<tr><form id='modify" . $id . "'></form><td><input class='form-control nameModify' type='text' name='nameModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[0]) . "'></td><td><input class='form-control descriptionModify' type='text' name='descriptionModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[1]) . "'></td><td><input class='form-control dateModify' type='date' name='dateModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[2] . "'></td><td><button class='modify btn bg-transparent p-0' type='submit' name='submitModifie" . $id . "' form='modify" . $id . "'><img src='images/modifier.png' alt=''></button></td></tr>";
                 }
 
 

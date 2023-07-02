@@ -1,3 +1,5 @@
+
+
 table {
     width: 90%!important;
 }
@@ -14,12 +16,22 @@ table {
     width: 8.5rem!important;
 }
 
+.modifier:focus, .modify:focus, .supprimer:focus {
+        border: none!important;
+}
+
+.modifier img, .modify img, .supprimer img {
+    width: 20px;
+}
+
+
+
 @media screen and (max-width: 575px) {
     body, #taskName, #taskDescription, #taskDateLimit, .btn, .nameModify, .descriptionModify, .dateModify {
-        font-size: 0.6rem!important;
+        font-size: 0.7rem!important;
     }
     .dateModify {
-        width: 5.5rem!important;
+        width: 6.3rem!important;
     }
 
 }
