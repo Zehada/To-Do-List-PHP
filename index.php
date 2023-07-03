@@ -12,23 +12,27 @@
 <body>
     <form id="taskForm" class="m-4" action="">
         <label class="form-label" for="taskName">Tâche</label><br>
-        <input class="form-control" type="text" name="name" id="taskName"><br>
+        <input class="form-control" type="text" name="name" id="taskName" autocomplete="off" value="<?php echo $_GET['name'] ?? ''; ?>"><br>
         <label class="form-label" for="taskDescription">Description</label><br>
-        <input class="form-control" type="text" name="description" id="taskDescription"><br>
+        <input class="form-control" type="text" name="description" id="taskDescription" autocomplete="off" value="<?php echo $_GET['description'] ?? ''; ?>"><br>
         <label class="form-label" for="taskDateLimit">Date limite</label><br>
-        <input class="form-control" type="date" name="date" id="taskDateLimit"><br>
+        <input class="form-control" type="date" name="date" id="taskDateLimit" min="<?php echo date("Y-m-d"); ?>" value="<?php echo $_GET['date'] ?? ''; ?>"><br>
         <input class="btn btn-dark" type="submit" name="submit" value="Ajouter"><br>
     </form>
 
     <?php
     $file = "tasks.txt";
     $fileOpen = fopen($file, "a");
-    if (!empty($_GET["name"]) and !empty($_GET["description"]) and !empty($_GET["date"])) {
-        $nouvelleTache = $_GET['name'] . "+-+" . $_GET['description'] . "+-+" . $_GET['date'] . "+-+" . uniqid();
-        fwrite($fileOpen, $nouvelleTache . "\n");
-        header("Location: index.php");
-    }
 
+    if (isset($_GET['submit'])) {
+        if (!empty($_GET["name"]) and !empty($_GET["description"]) and !empty($_GET["date"])) {
+            $nouvelleTache = $_GET['name'] . "+-+" . $_GET['description'] . "+-+" . $_GET['date'] . "+-+" . uniqid();
+            fwrite($fileOpen, $nouvelleTache . "\n");
+            header("Location: index.php");
+        } else {
+            echo "<p class='message-erreur'>Veuillez remplir tous les champs</p>";
+        }
+    }
     fclose($fileOpen);
 
 
@@ -71,7 +75,7 @@
                     echo "<td><form><button class='modifier btn bg-transparent p-0' type='submit' name='submitModify" . $i . "'><img src='images/modifier.png' alt=''></button></form><form><button class='supprimer btn bg-transparent p-0 mt-2' type='submit' name='submitOk" . $i . "'><img src='images/supprimer.png' alt=''></button></form></td>";
                     echo "</tr>";
                 } else {
-                    echo "<tr><form id='modify" . $id . "'></form><td><input class='form-control nameModify' type='text' name='nameModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[0]) . "'></td><td><input class='form-control descriptionModify' type='text' name='descriptionModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[1]) . "'></td><td><input class='form-control dateModify' type='date' name='dateModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[2] . "'></td><td><button class='modify btn bg-transparent p-0' type='submit' name='submitModifie" . $id . "' form='modify" . $id . "'><img src='images/modifier.png' alt=''></button></td></tr>";
+                    echo "<tr><form id='modify" . $id . "'></form><td><input class='form-control nameModify' type='text' name='nameModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[0]) . "'></td><td><input class='form-control descriptionModify' type='text' name='descriptionModify" . $id . "' form='modify" . $id . "' value='" . str_replace(array("'", '"'), array("&apos;", '&quot;'), $tacheUnitaire[1]) . "'></td><td><input class='form-control dateModify' type='date' min='" . date('Y-m-d') . "' name='dateModify" . $id . "' form='modify" . $id . "' value='" . $tacheUnitaire[2] . "'></td><td><button class='modify btn bg-transparent p-0' type='submit' name='submitModifie" . $id . "' form='modify" . $id . "'><img src='images/modifier.png' alt=''></button></td></tr>";
                 }
 
 
@@ -112,20 +116,24 @@
                 }
 
 
-                if (isset($_GET['submitModifie' . $id . '']) and !empty($_GET['nameModify' . $id . '']) and !empty($_GET['descriptionModify' . $id . '']) and !empty($_GET['dateModify' . $id . ''])) {
-                    $taskModifie = $_GET['nameModify' . $id . ''] . "+-+" . $_GET['descriptionModify' . $id . ''] . "+-+" . $_GET['dateModify' . $id . ''] . "+-+" . uniqid();
-                    array_push($tachesOk, $taskModifie);
-                    foreach ($taches as $tache) {
-                        if ($tache != $taches[$i]) {
-                            array_push($tachesOk, $tache);
+                if (isset($_GET['submitModifie' . $id . ''])) {
+                    if (!empty($_GET['nameModify' . $id . '']) and !empty($_GET['descriptionModify' . $id . '']) and !empty($_GET['dateModify' . $id . ''])) {
+                        $taskModifie = $_GET['nameModify' . $id . ''] . "+-+" . $_GET['descriptionModify' . $id . ''] . "+-+" . $_GET['dateModify' . $id . ''] . "+-+" . uniqid();
+                        array_push($tachesOk, $taskModifie);
+                        foreach ($taches as $tache) {
+                            if ($tache != $taches[$i]) {
+                                array_push($tachesOk, $tache);
+                            }
                         }
-                    }
-                    $result = implode("\n", $tachesOk);
-                    $fileOpenOk = fopen($file, "w+");
-                    fwrite($fileOpenOk, $result);
-                    fclose($fileOpenOk);
+                        $result = implode("\n", $tachesOk);
+                        $fileOpenOk = fopen($file, "w+");
+                        fwrite($fileOpenOk, $result);
+                        fclose($fileOpenOk);
 
-                    header("Location: index.php");
+                        header("Location: index.php");
+                    } else {
+                        echo "<p class='message-erreur'>Veuillez remplir tous les champs</p>";
+                    }
                 }
             };
 
