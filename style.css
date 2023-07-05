@@ -22,7 +22,10 @@ table {
     width: 20px;
 }
 
-
+.message-erreur {
+    color: red!important;
+    margin: 1.5rem!important;
+}
 
 @media screen and (max-width: 575px) {
     body, #taskName, #taskDescription, #taskDateLimit, .btn, .nameModify, .descriptionModify, .dateModify {
@@ -32,9 +35,6 @@ table {
         width: 6.3rem!important;
     }
 
+
 }
 
-.message-erreur {
-    color: red!important;
-    margin: 1.5rem!important;
-}

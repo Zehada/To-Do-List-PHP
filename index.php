@@ -79,7 +79,7 @@ if (!isset($_SESSION["newSession"])) {
                 $tacheUnitaire = explode("+-+", $taches[$i]);
                 $id = end($tacheUnitaire);
 
-                if (str_contains($taches[$i], 'modifié123') === false) {
+                if (strpos($taches[$i], 'modifié123') === false) {
 
                     echo "<tr>";
 
@@ -110,7 +110,7 @@ if (!isset($_SESSION["newSession"])) {
 
 
 
-                if (isset($_GET['submitModify' . $i . '']) and str_starts_with($taches[$i], '<tr>') === false) {
+                if (isset($_GET['submitModify' . $i . ''])) {
                     $taskModify = $tacheUnitaire[0] . "+-+" . $tacheUnitaire[1] . "+-+" . $tacheUnitaire[2] . "+-+" . "modifié123" . "+-+" . uniqid();
 
                     array_push($tachesOk, $taskModify);
