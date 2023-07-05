@@ -1,3 +1,17 @@
+<?php
+session_start();
+
+if (!isset($_SESSION["newSession"])) {
+    $fileOpenStart = fopen("tasks.txt", "w+");
+    fwrite($fileOpenStart, "");
+    fclose($fileOpenStart);
+    $_SESSION["newSession"] = true;
+}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
